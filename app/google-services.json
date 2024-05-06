@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361294504545",
+    "project_id": "audiorecorder-288ba",
+    "storage_bucket": "audiorecorder-288ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361294504545:android:4d0f1e50c56219c059c020",
+        "android_client_info": {
+          "package_name": "hung.deptrai.audiorecorder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHprnqefn2oYO_uNd_wu8r5W6LSGaYWqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
