@@ -27,8 +27,8 @@ bash
 cd repo
 Build and Run:
 
-Open the project in Android Studio.
-Build and run the application on your device or emulator.
+2. **Open the project in Android Studio.**
+3. **Build and run the application on your device or emulator.**
 ## Usage
 Record Audio: Use the interface to start a new recording. Choose your preferred audio format and begin capturing.
 Manage Recordings: Access your recordings through the app's main interface. Use the options to add, edit, or delete recordings.
