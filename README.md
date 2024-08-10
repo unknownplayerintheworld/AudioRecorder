@@ -23,8 +23,9 @@
    git clone https://github.com/unknownplayerintheworld/AudioRecorder.git
 2. **Navigate to the Project Directory:**
 
-```bash
+  ```bash
   cd repo
+ ```
 3. **Build and Run:**
 
   Open the project in Android Studio.
