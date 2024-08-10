@@ -29,11 +29,11 @@ Build and Run:
 
 Open the project in Android Studio.
 Build and run the application on your device or emulator.
-**Usage**
+## Usage
 Record Audio: Use the interface to start a new recording. Choose your preferred audio format and begin capturing.
 Manage Recordings: Access your recordings through the app's main interface. Use the options to add, edit, or delete recordings.
 Search Recordings: Utilize the search feature to quickly find recordings by entering relevant keywords.
-**Contributing**
+## Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
 Fork the repository.
