@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "361294504545",
+    "firebase_url": "https://audiorecorder-288ba-default-rtdb.firebaseio.com",
     "project_id": "audiorecorder-288ba",
     "storage_bucket": "audiorecorder-288ba.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "hung.deptrai.audiorecorder"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "361294504545-ketq05kg5ohnl5rbc33d2qj463r5qen9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hung.deptrai.audiorecorder",
+            "certificate_hash": "9884ca01f752e78efb2a50e9afd1a2d2d5a66722"
+          }
+        },
+        {
+          "client_id": "361294504545-a7p7udl4eufs29ls968p71kneu0b2kk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCHprnqefn2oYO_uNd_wu8r5W6LSGaYWqQ"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361294504545-a7p7udl4eufs29ls968p71kneu0b2kk2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
