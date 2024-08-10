@@ -21,14 +21,14 @@
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/unknownplayerintheworld/AudioRecorder.git
-Navigate to the Project Directory:
+2. **Navigate to the Project Directory:**
 
-bash
-cd repo
-Build and Run:
+```bash
+  cd repo
+3. **Build and Run:**
 
-2. **Open the project in Android Studio.**
-3. **Build and run the application on your device or emulator.**
+  Open the project in Android Studio.
+  Build and run the application on your device or emulator.
 ## Usage
 Record Audio: Use the interface to start a new recording. Choose your preferred audio format and begin capturing.
 Manage Recordings: Access your recordings through the app's main interface. Use the options to add, edit, or delete recordings.
