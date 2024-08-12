@@ -1,6 +1,7 @@
 package hung.deptrai.audiorecorder
 
 import android.Manifest
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -106,7 +107,7 @@ import hung.deptrai.audiorecorder.ui.view.PlayingScreen
 import hung.deptrai.audiorecorder.ui.view.RecordingScreen
 import hung.deptrai.audiorecorder.ui.view.SettingScreen
 import hung.deptrai.audiorecorder.viewmodel.AudioPlayerViewModel
-import hung.deptrai.audiorecorder.viewmodel.AudioPlayerViewModelFactory
+//import hung.deptrai.audiorecorder.viewmodel.AudioPlayerViewModelFactory
 import hung.deptrai.audiorecorder.viewmodel.LoginViewModel
 import hung.deptrai.audiorecorder.viewmodel.RecordingRoomViewModel
 import hung.deptrai.audiorecorder.viewmodel.RecordingRoomViewModelFactory
@@ -187,9 +188,7 @@ class MainActivity : ComponentActivity() {
         val recordingViewModel: RecordingViewModel by viewModels {
             RecordingViewModelFactory(this)
         }
-        val audioPlayerViewModel: AudioPlayerViewModel by viewModels {
-            AudioPlayerViewModelFactory(this)
-        }
+        val audioPlayerViewModel: AudioPlayerViewModel = viewModel(factory = AudioPlayerViewModel.Factory)
         val recordingTime by recordingViewModel.recordingTime.collectAsState()
 
         val formattedTime = remember(recordingTime) {
@@ -445,7 +444,7 @@ class MainActivity : ComponentActivity() {
                 run {
                     val uri = Uri.parse(navBackStackEntry.arguments?.getString("uri"))
                     val context = LocalContext.current
-                    val audioFile = audioPlayerViewModel.getAudioFileInfo(context, uri)
+                    val audioFile = audioPlayerViewModel.getAudioFileInfo(uri)
                     audioFile?.let { file ->
                         val tagList = listOf(
                             Tag(
@@ -840,7 +839,7 @@ class MainActivity : ComponentActivity() {
                         text = { Text("Do you really want to delete this recording?") },
                         confirmButton = {
                             Button(onClick = {
-                                audioPlayerVM.deleteRecordingFile(context, fileURL)
+                                audioPlayerVM.deleteRecordingFile(fileURL)
                                 roomViewModel.deleteRecordingByFileName(audioList[index].name)
                                 recordingViewModel.deleteRecordingElement(index)
                                 showDialog = false
@@ -865,7 +864,8 @@ class MainActivity : ComponentActivity() {
                                     showDialog = true
                                 }, onTap = {
                                     if (!isEdit) {  // Check if isEdit is false
-                                        val encodedUri = Uri.encode(audioList[index].audioPath.toString())
+                                        val encodedUri =
+                                            Uri.encode(audioList[index].audioPath.toString())
                                         navController.navigate("player/$encodedUri")
                                         audioPlayerVM.setAudioUri(audioList[index].audioPath)
                                         audioPlayerVM.playAudio()

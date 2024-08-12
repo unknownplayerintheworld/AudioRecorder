@@ -514,7 +514,7 @@
  
              return recordings
          }
-         fun getAudioDuration(contentResolver: ContentResolver, uri: Uri): Long {
+         private fun getAudioDuration(contentResolver: ContentResolver, uri: Uri): Long {
              var duration: Long = 0
              val retriever = MediaMetadataRetriever()
              try {

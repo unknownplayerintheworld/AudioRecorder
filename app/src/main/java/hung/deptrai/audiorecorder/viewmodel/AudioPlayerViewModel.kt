@@ -1,6 +1,7 @@
 package hung.deptrai.audiorecorder.viewmodel
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.media.MediaPlayer
@@ -9,12 +10,41 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.CreationExtras
+import hung.deptrai.audiorecorder.MyApplication
+import hung.deptrai.audiorecorder.data.repository.AudioRepository
 import hung.deptrai.audiorecorder.model.Audio
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class AudioPlayerViewModel(@SuppressLint("StaticFieldLeak") private val context : Context) : ViewModel() {
+class AudioPlayerViewModel(
+    private val repository : AudioRepository,
+    private val savedStateHandle: SavedStateHandle) : ViewModel() {
+    companion object{
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                // Get the Application object from extras
+                val application = checkNotNull(extras[APPLICATION_KEY])
+                // Create a SavedStateHandle for this ViewModel from extras
+                val savedStateHandle = extras.createSavedStateHandle()
+
+                return AudioPlayerViewModel(
+                    (application as MyApplication).myRepository,
+                    savedStateHandle
+                ) as T
+            }
+        }
+    }
     var mediaPlayer: MediaPlayer? = null
     private val _audioUri = MutableStateFlow<Uri?>(null)
 
@@ -45,60 +75,18 @@ class AudioPlayerViewModel(@SuppressLint("StaticFieldLeak") private val context 
     fun setAudioUri(uri: Uri){
         _audioUri.value = uri
     }
-    fun getAudioFileInfo(context: Context, uri: Uri): Audio? {
-        val contentResolver = context.contentResolver
-
-        val projection = arrayOf(
-            MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.DISPLAY_NAME,
-            MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.DATE_ADDED
-        )
-
-        val cursor = contentResolver.query(
-            uri,
-            projection,
-            null,
-            null,
-            null
-        )
-
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-                val nameColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
-                val durationColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-                val dateAddedColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)
-
-                it.getLong(idColumn)
-                val name = it.getString(nameColumn)
-                val duration = it.getLong(durationColumn)
-                val dateAdded = it.getLong(dateAddedColumn)
-
-                return Audio(name, duration, dateAdded, uri)
-            }
-        }
-
-        return null
+    fun getAudioFileInfo(uri: Uri): Audio? {
+        return repository.getAudioFileInfo(uri)
     }
 
-    fun deleteRecordingFile(context: Context, fileUri: Uri): Boolean {
-        val contentResolver: ContentResolver = context.contentResolver
-        return try {
-            val rowsDeleted = contentResolver.delete(fileUri, null, null)
-
-            rowsDeleted > 0
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
+    fun deleteRecordingFile(fileUri: Uri): Boolean {
+        return repository.deleteRecordingFile(fileUri)
     }
 
     fun playAudio() {
         _audioUri.value?.let { uri ->
             try {
-                val contentResolver = context.contentResolver
-                val parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "r")
+                val parcelFileDescriptor = repository.getFileDescriptor(uri)
                 if (parcelFileDescriptor != null) {
                     mediaPlayer = MediaPlayer()
                     mediaPlayer?.setDataSource(parcelFileDescriptor.fileDescriptor)
